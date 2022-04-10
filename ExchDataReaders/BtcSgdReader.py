@@ -17,8 +17,14 @@ class BtcSgdReader:
         self._data_frame.to_csv(self._data_file, index=False)
 
     def retrieve_data(self):
-        resp = urllib.request.urlopen(self._url)
-        data = json.loads(resp.read())
+        try:
+            resp = urllib.request.urlopen(self._url)
+            resp_read = resp.read()
+        except Exception as e:
+            print(traceback.format_exc())
+            exit(0)
+        else:
+            data = json.loads(resp_read)
 
 
         ts = datetime.strptime(data["CreatedTimestampUtc"][:-2], "%Y-%m-%dT%H:%M:%S.%f")
@@ -44,18 +50,15 @@ def main():
     i = 0
     
     data_reader = BtcSgdReader()
-    a = time.time()
 
     while True:
+        time.sleep(2)
         data_reader.retrieve_data()
         i += 1
 
         #data_reader.write_data()
-        if i%10 == 0:
+        if i%100 == 0:
             data_reader.write_data()
-        print(i)
-
-    print(time.time()-a)
 
 
 if __name__ == "__main__":
