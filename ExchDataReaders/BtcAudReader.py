@@ -1,6 +1,8 @@
 import urllib.request
 import json
 
+import time
+
 import pandas as pd
 
 class BtcAudReader:
@@ -37,11 +39,16 @@ def main():
     data_reader = BtcAudReader()
 
     while True:
-        data_reader.retrieve_data()
-        i += 1
+        try:
+            data_reader.retrieve_data()
+        except:
+            print("got exception")
+            time.sleep(2)
+        else:
+            i += 1
 
-        if i%100 == 0:
-            data_reader.write_data()
+            if i%100 == 0:
+                data_reader.write_data()
 
 
 if __name__ == "__main__":

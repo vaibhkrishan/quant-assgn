@@ -53,12 +53,16 @@ def main():
 
     while True:
         time.sleep(2)
-        data_reader.retrieve_data()
-        i += 1
+        try:
+            data_reader.retrieve_data()
+        except:
+            print("got exception")
+        else:
+            i += 1
 
-        #data_reader.write_data()
-        if i%100 == 0:
-            data_reader.write_data()
+            #data_reader.write_data()
+            if i%100 == 0:
+                data_reader.write_data()
 
 
 if __name__ == "__main__":
